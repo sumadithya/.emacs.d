@@ -1,0 +1,205 @@
+* Terminal
+** Setting default shell to bash
+#+begin_src emacs-lisp
+  (defvar my-term-shell "/bin/bash")
+  (defadvice ansi-term (before force-bash)
+    (interactive (list my-term-shell)))
+  (ad-activate 'ansi-term)
+#+end_src
+** Hotkey
+#+begin_src emacs-lisp
+  (global-set-key (kbd "<s-return>") 'ansi-term)
+#+end_src
+* Disabled defaults
+** Backup files
+#+begin_src emacs-lisp
+  (setq make-backup-file nil)
+  (setq auto-save-default nil)
+#+end_src
+** Disable bars
+#+begin_src emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+#+end_src
+** Bell
+#+begin_src emacs-lisp
+  (setq ring-bell-function 'ignore)
+#+end_src
+** Startup Message
+#+begin_src emacs-lisp
+  (setq inhibit-startup-message t)
+#+end_src
+* Shorter Y/N
+#+begin_src emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+* Panning
+#+begin_src emacs-lisp
+  (setq scroll-conservatively 100)
+#+end_src
+* Line highlight
+#+begin_src emacs-lisp
+  (when window-system (global-hl-line-mode t))
+#+end_src
+* Pretty Symbols
+#+begin_src emacs-lisp
+  (when window-system (global-prettify-symbols-mode t))
+#+end_src
+* Key help
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :init
+    (which-key-mode))
+#+end_src
+* Cosmetics
+** Line beacon
+#+begin_src emacs-lisp
+  (use-package beacon
+    :ensure t
+    :init
+    (beacon-mode 1))
+#+end_src
+
+* Org
+** Org Bullets
+#+begin_src emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda() (org-bullets-mode))))
+#+end_src
+
+** Org Tempo
+#+begin_src emacs-lisp
+  (require 'org-tempo)
+#+end_src
+
+* IDO
+** Enable IDO mode
+#+begin_src emacs-lisp
+  (setq ido-enable-flex-matching nil)
+  (setq ido-create-new-buffer 'always)
+  (setq ido-everywhere t)
+  (ido-mode 1)
+#+end_src
+
+** IDO-Vertical
+#+begin_src emacs-lisp
+  (use-package ido-vertical-mode
+    :ensure t
+    :init
+    (ido-vertical-mode 1))
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+#+end_src
+
+** smex
+#+begin_src emacs-lisp
+  (use-package smex
+    :ensure t
+    :init (smex-initialize)
+    :bind
+    ("M-x" . smex))
+#+end_src
+
+** switch buffer
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
+#+end_src
+* Buffers
+** Enable ibuffer
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x b") 'ibuffer)
+#+end_src
+* avy
+#+begin_src emacs-lisp
+  (use-package avy
+    :ensure t
+    :bind
+    ("M-s" . avy-goto-char))
+#+end_src
+* Config edit/reload
+** Edit
+#+begin_src emacs-lisp
+  (defun config-visit ()
+    (interactive)
+    (find-file "~/.emacs.default/config.org"))
+  (global-set-key (kbd "C-c e") 'config-visit)
+#+end_src
+** Reload
+#+begin_src emacs-lisp
+  (defun config-reload ()
+    (interactive)
+    (org-babel-load-file (expand-file-name "~/.emacs.default/config.org")))
+  (global-set-key (kbd "C-c r") 'config-reload)
+#+end_src
+* Rainbow
+#+begin_src emacs-lisp
+  (use-package rainbow-mode
+    :ensure t
+    :init (rainbow-mode 1))
+#+end_src
+* Windows
+** switch-window
+#+begin_src emacs-lisp
+  (use-package switch-window
+    :ensure t
+    :config
+    (setq switch-window-input-style 'minibuffer)
+    (setq switch-window-increase 4)
+    (setq switch-window-threshold 2)
+    (setq switch-window-shortcut-style 'qwerty)
+    (setq switch-window-qwerty-shortcuts
+	  '("a" "s" "d" "f" "j" "k" "l"))
+    :bind
+    ([remap other-window] . switch-window))
+#+end_src
+** Following the window split
+#+begin_src emacs-lisp
+  (defun split-and-follow-horizontally ()
+    (interactive)
+    (split-window-below)
+    (balance-window)
+    (other-window 1))
+  (global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+
+  (defun split-and-follow-vertically ()
+    (interactive)
+    (split-window-right)
+    (balance-window)
+    (other-window 1))
+  (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+#+end_src
+* Programming/Code navigation tweaks
+** Subword
+Navigating through subwords in camelCased words using =M-f= and =M-b= .
+#+begin_src emacs-lisp
+(global-subword-mode 1)
+#+end_src
+** Electric
+For auto-pairing. (brackets, paranthesis, quotes and all that jazz)
+#+begin_src emacs-lisp
+  (setq electric-pair-pairs '(
+			      (?\{ . ?\})
+			      (?\( . ?\))
+			      (?\[ . ?\])
+			      (?\" . ?\")
+			      ))
+  (electric-pair-mode t)
+#+end_src
+** Whole line or region
+Kill or save the current line(if no region is selected) or the selected region.
+#+begin_src emacs-lisp
+  (use-package whole-line-or-region
+    :ensure t
+    :init (whole-line-or-region-global-mode 1))
+#+end_src
+** Move line
+=M-<arrow-keys>=
+#+begin_src emacs-lisp
+  (use-package move-text
+    :ensure t)
+  (move-text-default-bindings)
+#+end_src
+*** TODO Check about the [[https://github.com/emacsfodder/move-text][github page]] for indentation handling.
+
