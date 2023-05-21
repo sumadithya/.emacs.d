@@ -11,3 +11,4 @@ config.el
 elpa
 auto-save-list
 smex-items
+recentf

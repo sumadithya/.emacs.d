@@ -69,12 +69,14 @@
     :config
     (add-hook 'org-mode-hook (lambda() (org-bullets-mode))))
 #+end_src
-
 ** Org Tempo
 #+begin_src emacs-lisp
   (require 'org-tempo)
 #+end_src
-
+** emacs-lisp source block
+#+begin_src emacs-lisp
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+#+end_src
 * IDO
 ** Enable IDO mode
 #+begin_src emacs-lisp
@@ -111,6 +113,13 @@
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x b") 'ibuffer)
 #+end_src
+** Always kill current buffer
+#+begin_src emacs-lisp
+  (defun kill-curr-buffer ()
+    (interactive)
+    (kill-buffer (current-buffer)))
+  (global-set-key (kbd "C-x k") 'kill-curr-buffer)
+#+end_src
 * avy
 #+begin_src emacs-lisp
   (use-package avy
@@ -132,12 +141,6 @@
     (interactive)
     (org-babel-load-file (expand-file-name "~/.emacs.default/config.org")))
   (global-set-key (kbd "C-c r") 'config-reload)
-#+end_src
-* Rainbow
-#+begin_src emacs-lisp
-  (use-package rainbow-mode
-    :ensure t
-    :init (rainbow-mode 1))
 #+end_src
 * Windows
 ** switch-window
@@ -202,4 +205,40 @@ Kill or save the current line(if no region is selected) or the selected region.
   (move-text-default-bindings)
 #+end_src
 *** TODO Check about the [[https://github.com/emacsfodder/move-text][github page]] for indentation handling.
-
+** Lines and columns on the modeline
+=M-g M-g <number>= is for moving to a line number.
+#+begin_src emacs-lisp
+  (line-number-mode 1)
+  (column-number-mode 1)
+#+end_src
+** Rainbow
+Colors for hex values.
+#+begin_src emacs-lisp
+  (use-package rainbow-mode
+    :ensure t
+    :init (rainbow-mode 1))
+#+end_src
+Coloring the brackets (and other delimiters).
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :init (rainbow-delimiters-mode 1))
+#+end_src
+** Autocompletion
+Using company
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    :init
+    (add-hook 'after-init-hook 'global-company-mode))
+#+end_src
+*** TODO Checkout other auto complete alternatives.
+* Dashboard
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook)
+    (setq dashboard-items '((recents . 10)))
+    (setq dashboard-banner-logo-title "|-Placehoder text-|"))
+#+end_src

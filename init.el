@@ -23,7 +23,7 @@
  '(custom-safe-themes
    '("02f57ef0a20b7f61adce51445b68b2a7e832648ce2e7efb19d217b6454c1b644" default))
  '(package-selected-packages
-   '(move-text whole-line-or-region switch-window rainbow-mode avy smex ido-vertical-mode org-bullets beacon doom-themes which-key use-package)))
+   '(company dashboard rainbow-delimiters move-text whole-line-or-region switch-window rainbow-mode avy smex ido-vertical-mode org-bullets beacon doom-themes which-key use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
