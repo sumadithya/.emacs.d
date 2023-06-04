@@ -60,7 +60,6 @@
     :init
     (beacon-mode 1))
 #+end_src
-
 * Org
 ** Org Bullets
 #+begin_src emacs-lisp
@@ -241,4 +240,67 @@ Using company
     (dashboard-setup-startup-hook)
     (setq dashboard-items '((recents . 10)))
     (setq dashboard-banner-logo-title "|-Placehoder text-|"))
+
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 #+end_src
+** TODO Improve dashboard.
+* Modeline
+#+begin_src emacs-lisp
+  (use-package spaceline
+    :ensure t
+    :config
+    (require 'spaceline-config)
+    (setq powerline-default-seperator (quote arrow))
+    (spaceline-emacs-theme))
+#+end_src
+** Hide minor modes
+#+begin_src emacs-lisp
+  (use-package diminish
+    :ensure t
+    :init
+    (diminish 'beacon-mode)
+    (diminish 'subword-mode)
+    (diminish 'rainbow-mode)
+    (diminish 'which-key-mode)
+    (diminish 'whole-line-or-region-local-mode))
+#+end_src
+** TODO Switch to doom-modeline
+* EXWM stuff
+** EXWM
+#+begin_src emacs-lisp
+  (use-package exwm
+    :ensure t
+    :config
+    (require 'exwm-config)
+    (exwm-config-default))
+#+end_src
+*** System tray
+#+begin_src emacs-lisp
+  (require 'exwm-systemtray)
+  (exwm-systemtray-enable)
+#+end_src
+*** Multi-monitor
+#+begin_src emacs-lisp
+  (require 'exwm-randr)
+  (setq exwm-randr-workspace-output-plist '(1 "eDP1"))
+  (add-hook 'exwm-randr-screen-change-hook
+	    (lambda ()
+	      (start-process-shell-command
+	       "xrandr" nil "xrandr --output eDP1 --left-of HDMI1 --auto")))
+  (exwm-randr-enable)
+#+end_src
+** dmenu
+#+begin_src emacs-lisp
+  (use-package dmenu
+    :ensure t
+    :bind
+    ("s-SPC" . 'dmenu))
+#+end_src
+
+* popup-kill-ring
+#+begin_src emacs-lisp
+  (use-package popup-kill-ring
+    :ensure t
+    :bind ("M-y" . popup-kill-ring))
+#+end_src
+

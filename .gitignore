@@ -11,4 +11,6 @@ config.el
 elpa
 auto-save-list
 smex-items
+dmenu-items
 recentf
+session.*
