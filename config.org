@@ -265,38 +265,6 @@ Using company
     (diminish 'whole-line-or-region-local-mode))
 #+end_src
 ** TODO Switch to doom-modeline
-* EXWM stuff
-** EXWM
-#+begin_src emacs-lisp
-  (use-package exwm
-    :ensure t
-    :config
-    (require 'exwm-config)
-    (exwm-config-default))
-#+end_src
-*** System tray
-#+begin_src emacs-lisp
-  (require 'exwm-systemtray)
-  (exwm-systemtray-enable)
-#+end_src
-*** Multi-monitor
-#+begin_src emacs-lisp
-  (require 'exwm-randr)
-  (setq exwm-randr-workspace-output-plist '(1 "eDP1"))
-  (add-hook 'exwm-randr-screen-change-hook
-	    (lambda ()
-	      (start-process-shell-command
-	       "xrandr" nil "xrandr --output eDP1 --left-of HDMI1 --auto")))
-  (exwm-randr-enable)
-#+end_src
-** dmenu
-#+begin_src emacs-lisp
-  (use-package dmenu
-    :ensure t
-    :bind
-    ("s-SPC" . 'dmenu))
-#+end_src
-
 * popup-kill-ring
 #+begin_src emacs-lisp
   (use-package popup-kill-ring
